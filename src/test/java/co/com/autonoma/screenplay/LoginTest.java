@@ -13,17 +13,14 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
-
 public class LoginTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
-    private Actor actor;
+    private Actor<By> actor;  // Especificar que Actor usa By
 
     @BeforeTest
     public void setup() {
-
-
         WebDriverManager.chromedriver().setup();
 
         driver = new ChromeDriver();
@@ -32,28 +29,25 @@ public class LoginTest {
 
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        actor = Actor.builder()
+        actor = Actor.<By>builder()
                 .name("User")
                 .driver(driver)
                 .interaction(new InteractionSelenium(wait, driver))
                 .build();
-
-
     }
 
     @Test
     public void login() throws InterruptedException {
         Thread.sleep(1000);
-        actor.attemptsTo(ClickButtonTask.on(By.id("login2")));
+
+        actor.attemptsTo(ClickButtonTask.on(By.id("login2"), actor.getInteraction()));
         Thread.sleep(1000);
     }
 
     @AfterTest
     public void teardown() {
-        if (driver != null){
+        if (driver != null) {
             driver.quit();
         }
     }
-
-
 }

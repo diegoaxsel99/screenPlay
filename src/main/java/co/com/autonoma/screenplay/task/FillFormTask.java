@@ -13,14 +13,17 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FillFormTask<T> implements Task {
+public class FillFormTask<T> implements Task<T> {
 
     private T form;
-
-    private Map<String, By> fieldMappings;
+    private Map<String, T> fieldMappings;
 
     @Override
-    public void performAs(Actor actor) {
+    public void performAs(Actor<T> actor) {
         actor.getInteraction().fillForm(form, fieldMappings);
+    }
+
+    public static <T> FillFormTask<T> with(T form, Map<String, T> fieldMappings) {
+        return new FillFormTask<>(form, fieldMappings);
     }
 }

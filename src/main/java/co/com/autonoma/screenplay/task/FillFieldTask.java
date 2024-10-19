@@ -11,14 +11,17 @@ import org.openqa.selenium.By;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FillFieldTask<T> implements Task {
+public class FillFieldTask<T> implements Task<T> {
 
-    private By fieldLocator;
-
-    private T data;
+    private T fieldLocator;
+    private String data;
 
     @Override
-    public void performAs(Actor actor) {
+    public void performAs(Actor<T> actor) {
         actor.getInteraction().fillField(fieldLocator, data);
+    }
+
+    public static <T> FillFieldTask<T> with(T fieldLocator, String data) {
+        return new FillFieldTask<>(fieldLocator, data);
     }
 }

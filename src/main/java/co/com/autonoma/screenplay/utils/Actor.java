@@ -1,5 +1,6 @@
 package co.com.autonoma.screenplay.utils;
 
+import co.com.autonoma.screenplay.repository.InteractionRepository;
 import co.com.autonoma.screenplay.task.Task;
 import lombok.*;
 import org.openqa.selenium.WebDriver;
@@ -8,13 +9,13 @@ import org.openqa.selenium.WebDriver;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Actor {
+public class Actor<T> {
 
     private String name;
     private WebDriver driver;
-    private InteractionSelenium interaction;
+    private InteractionRepository<T> interaction;
 
-    public <T extends Task> void attemptsTo(T task) {
+    public <E extends Task<T>> void attemptsTo(E task) {
         task.performAs(this);
     }
 }
